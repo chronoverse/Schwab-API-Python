@@ -27,6 +27,13 @@ Useful links:
 - Optional automatic starting/stopping of streamer when market opens/closes.  
 - Streaming stability with automatic restarts if the streamer crashes.  
 
+### Development Setup (conda)
+This repo includes an `environment.yml` for managing a conda virtual environment.
+
+1. Create the environment: `conda env create -f environment.yml`
+2. Activate it: `conda activate schwabdev`
+3. Install the package in editable mode using [conda-pypi](https://github.com/conda/conda-pypi) (instead of `pip`): `conda pypi -n schwabdev -y install -e .`
+
 ### How to Contribute
 1. Fork this repository.
 2. Create a branch off of `dev` for your change (e.g. `git checkout -b my-fix dev`).

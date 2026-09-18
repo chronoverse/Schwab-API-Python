@@ -1,0 +1,11 @@
+name: schwabdev
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - tzdata
+  - aiohttp
+  - requests
+  - websockets
+  - cryptography
+  - python-dotenv
