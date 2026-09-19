@@ -27,6 +27,23 @@ Useful links:
 - Optional automatic starting/stopping of streamer when market opens/closes.  
 - Streaming stability with automatic restarts if the streamer crashes.  
 
+### Authentication & Token Storage
+Schwabdev handles the OAuth flow and token persistence for you (`schwabdev/tokens.py`).
+
+**OAuth flow**
+1. Credentials (`app_key`, `app_secret`, `callback_url`) come from constructor args, falling back to `~/.schwabdev/env.json`.
+2. **Initial auth (authorization-code grant)** — if no valid tokens exist yet, a browser is opened (or your custom `call_for_auth` callback is invoked) to `https://api.schwabapi.com/v1/oauth/authorize`, and you paste back the redirected callback URL. The `code` in that URL is exchanged for tokens via `POST /v1/oauth/token` with `grant_type=authorization_code`.
+3. **Ongoing refresh** — on each use:
+   - The **access token** lives 30 minutes and is refreshed automatically via `grant_type=refresh_token` once it's within 61 seconds of expiring.
+   - The **refresh token** lives 7 days; once it's within ~60.5 minutes of expiring, the full browser authorization-code flow is triggered again (Schwab requires re-authentication rather than silently refreshing the refresh token).
+
+**Local storage**
+Tokens are stored in a SQLite database, default path `~/.schwabdev/tokens.db` (configurable via `tokens_db`), in a single-row `schwabdev` table (`access_token`, `refresh_token`, `id_token`, issued timestamps, `expires_in`, `token_type`, `scope`). On every update, the row is deleted and reinserted with the new values.
+
+- **Optional encryption at rest** — pass a Fernet key via the `encryption` argument and `access_token`/`refresh_token`/`id_token` are encrypted with `cryptography.fernet.Fernet` before being written, prefixed with `enc:`. See the <a target="_blank" href="https://github.com/tylerebowers/Schwabdev/blob/main/docs/examples/extra/encrypted_db_setup.py">encrypted DB example</a>. Without a key, tokens are stored in plaintext in the SQLite file.
+- **Multi-process safety** — updates use `BEGIN EXCLUSIVE` SQLite transactions plus a lock, so if multiple `Client` instances share the same DB file, only one refreshes over the network while the others detect the update and reload from disk.
+- `app_key`/`app_secret` themselves are not persisted by this module — they stay in memory / `env.json` and are only used to sign the Basic Auth header on token requests.
+
 ### Development Setup (conda)
 This repo includes an `environment.yml` for managing a conda virtual environment.
 
