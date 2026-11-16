@@ -1,4 +1,4 @@
-name: schwabdev
+name: schwabenv
 channels:
   - conda-forge
   - defaults
@@ -162,4 +162,4 @@ dependencies:
   - zipp=4.1.0=pyhcf101f3_0
   - zlib=1.3.2=h8088a28_3
   - zstd=1.5.7=hf451053_7
-prefix: /Users/norman/miniforge3/envs/schwabdev
+prefix: /Users/norman/miniforge3/envs/schwabenv
