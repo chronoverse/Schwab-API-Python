@@ -45,11 +45,11 @@ Tokens are stored in a SQLite database, default path `~/.schwabdev/tokens.db` (c
 - `app_key`/`app_secret` themselves are not persisted by this module — they stay in memory / `env.json` and are only used to sign the Basic Auth header on token requests.
 
 ### Development Setup (conda)
-This repo includes an `environment.yml` for managing a conda virtual environment.
+This repo includes an `environment.yml` for managing a conda virtual environment (Python 3.14).
 
 1. Create the environment: `conda env create -f environment.yml`
-2. Activate it: `conda activate schwabenv`
-3. Install the package in editable mode using [conda-pypi](https://github.com/conda/conda-pypi) (instead of `pip`): `conda pypi -n schwabenv -y install -e .`
+2. Activate it: `conda activate schwab14`
+3. Install the package in editable mode using [conda-pypi](https://github.com/conda/conda-pypi) (instead of `pip`): `conda pypi -n schwab14 -y install -e .`
 
 ### How to Contribute
 1. Fork this repository.
